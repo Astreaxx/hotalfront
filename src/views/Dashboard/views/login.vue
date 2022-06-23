@@ -112,6 +112,7 @@ import axios from 'axios'
                 if (resp.status == 200) {
                    this.respuesta = "Sesión abierta" 
                    this.Entidad();
+                   console.log("me ejecuto")
                    this.Usuarios();
                    sessionStorage.setItem('authAdminToken', resp.data.token)
                     location.replace('/panel/dashboard')
@@ -124,43 +125,34 @@ import axios from 'axios'
             })
         },
 
-        Entidad: async function () {
-             console.log('Hola');
-            await axios
-            .get('http://localhost:3000/entidad')
-            .then((resp) => {
-            if (resp.status == 200) {
-                for (let index = 0; index < resp.data.length; index++) {
-                    const element = resp.data[index];
-
-                    if (element.correo === this.email) {
-                        
-                        if (element.primerNombre == null) {
-                            this.usuarios = element.razonSocial
-                        }
-                        else {
-                            this.usuarios = element.primerNombre + " " +element.primerApellido
-                        }
-                        window.sessionStorage.setItem("usuario", this.usuarios);
-                    }
-                    
-                }
-                console.log('todo birn');
-            }
-            console.log(this.usuario);
-            })
-         },
-
+       Entidad: async function () {
+      let numero = window.sessionStorage.getItem("seleccionadoAdmin");
+      this.obtener = parseInt(numero);
+      console.log("yooo", this.obtener);
+      console.log("Hola");
+      await axios
+        .get("http://localhost:3000/entidad/" )
+        .then((resp) => {
+          console.log("respuesta",resp)
+          if (resp.status == 200) {
+            let entidad = resp.data;
+            this.usuario = resp.data.primerNombre;
+            this.idTipoPersona = entidad.idTipoPersona;
+            console.log("todo birn", this.idTipoPersona);
+          }
+        });
+    },
          Usuarios: async function () {
              console.log('Hola');
              let usuario = this.email
             await axios
             .get('http://localhost:3000/usuario/'+usuario)
             .then((resp) => {
+                console.log("a",resp)
             if (resp.status == 200) {
                 let seleccionadoxd = resp.data[0].idUsuario
                 window.sessionStorage.setItem("seleccionadoAdmin", seleccionadoxd);
-                console.log('todo birn', seleccionadoxd);
+                console.log('SELECCIONADO', seleccionadoxd);
             }
             console.log(this.seleccionado);
             })

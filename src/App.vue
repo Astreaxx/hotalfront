@@ -13,7 +13,7 @@
         <v-spacer></v-spacer>
         <!-- nombre de la sesión -->
         <div>
-          <h3 style="color: white; margin-right: 30px" v-if="tokenAdmin">Hola, {{ ObtenerUsuarios.idUsuario }}</h3>
+          <h3 style="color: white; margin-right: 30px" v-if="tokenAdmin">Hola, {{ usuario }}</h3>
         </div>
 
       </v-app-bar>
@@ -136,7 +136,7 @@
         <v-spacer></v-spacer>
         <!-- nombre de la sesión -->
         <div v-if="token">
-          <h3 style="color: green">Hola {{ usuario }}</h3>
+          <h3 style="color: green">Hola {{ usuarioCliente }}</h3>
         </div>
         <v-menu bottom left>
           <template v-slot:activator="{ on, attrs }">
@@ -308,10 +308,8 @@ export default {
       'mdi-instagram',
     ],
     ObtenerUsuarios: [],
-    ObtenerRoles:{
-nombre:""
-    },
-    Obtener:[],
+    ObtenerRoles:[],
+    usuarioCliente:"",
     token: "",
     usuario: "",
     obtener: 0,
@@ -319,8 +317,7 @@ nombre:""
     drawer: false,
     group: null,
     trabajador: 0,
-    estado: 0,
-    
+    estado: 0
   }),
 
   created() {
@@ -328,7 +325,6 @@ nombre:""
     this.Entidad();
     this.filtrar();
     this.obtenerRoles();
-    this.obtener();
 
   },
 
@@ -364,24 +360,10 @@ nombre:""
 
                 }
               }
-              console.log("Yo soy el rol: ", this.ObtenerRoles);  
-               console.log("a",this.Obtener)         
+              console.log("Yo soy el rol: ", this.ObtenerRoles);           
             }
         });
       },
-       obtener: async function () {
-         console.log("a",this.Obtener)
-        let id = this.ObtenerUsuarios.idUsuario
-        console.log("Hola");
-        await axios.get("http://localhost:3000/usuario"+id).then((resp) => {
-            if (resp.status == 200) {
-          this.Obtener = resp.data;
-        
-        }
-        console.log("a",this.Obtener)
-      });
-    },
-      
     infoCuenta() {
       if (this.idTipoPersona == 1) {
         location.replace('/cuenta')
@@ -390,17 +372,19 @@ nombre:""
       }
     },
     Entidad: async function () {
-      let numero = window.sessionStorage.getItem("seleccionado");
+      let numero = window.sessionStorage.getItem("seleccionadoAdmin");
       this.obtener = parseInt(numero);
       console.log("yooo", this.obtener);
       console.log("Hola");
       await axios
         .get("http://localhost:3000/entidad/" + this.obtener)
         .then((resp) => {
+          console.log("respuesta",resp)
           if (resp.status == 200) {
             let entidad = resp.data;
+            this.usuario = resp.data.primerNombre;
             this.idTipoPersona = entidad.idTipoPersona;
-            console.log("todo birn", this.idTipoPersona);
+            console.log("se sobre escribe el valor", this.idTipoPersona);
           }
         });
     },
@@ -423,7 +407,7 @@ nombre:""
 
       this.tokenAdmin = window.sessionStorage.getItem("authAdminToken");
       this.token = window.sessionStorage.getItem("authToken");
-      this.usuario = window.sessionStorage.getItem('usuario')
+      this.usuarioCliente = window.sessionStorage.getItem('usuario')
     },
     toggle: async function () {
       var logout = confirm("¿Estas seguro de salir?")

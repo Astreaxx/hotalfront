@@ -1,5 +1,8 @@
 <template>
-    <p id="text">Bienvenido estimado colaborador</p>
+<div>
+ <p id="text">Bienvenido estimado colaborador</p>
+</div>
+   
 </template>
 
 <style scoped>
