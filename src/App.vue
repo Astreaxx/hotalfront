@@ -6,9 +6,7 @@
       <v-app-bar color="black" dark name v-if="$route.name && $route.name.includes('admin-')">
         <v-app-bar-nav-icon @click="drawer = true" v-if="tokenAdmin"></v-app-bar-nav-icon>
 
-        <v-toolbar-title style="margin-left: 30px">Hotel D,lido</v-toolbar-title>
-
-        
+        <v-toolbar-title style="margin-left: 30px">Hotel D'Lido</v-toolbar-title>
 
         <v-spacer></v-spacer>
         <!-- nombre de la sesión -->
@@ -22,16 +20,33 @@
 
       <v-navigation-drawer v-model="drawer" absolute temporary>
 
-        <h3>Hotel D,lido Panel:</h3><h3 >{{ObtenerRoles.nombreRol}}</h3>
-
+        <h3 style="text-align:center; padding-top: 10px;">Hotel D'Lido Panel:</h3><br>
+        <h3 style="text-align:center;">{{ObtenerRoles.nombreRol}}</h3>
+        <hr>
+        
         <separator />
         <v-list nav dense>
           <v-list-item-group v-model="group" active-class="deep-purple--text text--accent-4">
+
+            <v-list-item to="inicio">
+              <v-list-item-icon>
+                <v-icon>mdi-home</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>Inicio</v-list-item-title>
+            </v-list-item>
+            
             <v-list-item to="reserva" v-if="ObtenerRoles.reservas == 1 && ObtenerUsuarios.estado == 1">
               <v-list-item-icon>
-                <v-icon>mdi-bell</v-icon>
+                <v-icon>mdi-alarm-light</v-icon>
               </v-list-item-icon>
-              <v-list-item-title>Reservas</v-list-item-title>
+              <v-list-item-title>Aprobar Reserva</v-list-item-title>
+            </v-list-item>
+
+            <v-list-item to="habitaciones" v-if="ObtenerRoles.habitaciones == 1 && ObtenerUsuarios.estado == 1">
+               <v-list-item-icon>
+                <v-icon>mdi-bed</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>Habitaciones</v-list-item-title>
             </v-list-item>
 
             <v-list-item to="check-in" v-if="ObtenerRoles.check_in == 1&& ObtenerUsuarios.estado == 1">
@@ -41,19 +56,30 @@
               <v-list-item-title>check-in</v-list-item-title>
             </v-list-item>
 
-            <v-list-item to="check-out" v-if="ObtenerRoles.check_out == 1 && ObtenerUsuarios.estado == 1">
+            <v-list-item to="servicios" v-if="ObtenerRoles.vista1 == 1 && ObtenerUsuarios.estado == 1">
               <v-list-item-icon>
-                <v-icon>mdi-bell</v-icon>
+                <v-icon>mdi-basket</v-icon>
               </v-list-item-icon>
-              <v-list-item-title>check-out</v-list-item-title>
+              <v-list-item-title>servicios</v-list-item-title>
             </v-list-item>
 
-            <v-list-item to="habitaciones" v-if="ObtenerRoles.habitaciones == 1 && ObtenerUsuarios.estado == 1">
+            <v-list-item to="caja" v-if="ObtenerRoles.vista2 == 1 && ObtenerUsuarios.estado == 1">
               <v-list-item-icon>
-                <v-icon>mdi-home</v-icon>
+                <v-icon>mdi-account-cash</v-icon>
               </v-list-item-icon>
-              <v-list-item-title>Habitaciones</v-list-item-title>
+              <v-list-item-title>Caja</v-list-item-title>
             </v-list-item>
+
+            <v-list-item to="check-out" v-if="ObtenerRoles.check_out == 1 && ObtenerUsuarios.estado == 1">
+              <v-list-item-icon>
+                <v-icon>mdi-exit-run</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>Check-Out</v-list-item-title>
+            </v-list-item>
+
+            <br>
+            <divider> Mantenimiento</divider>
+            <hr>
 
             <v-list-item to="Usuarios" v-if="ObtenerRoles.listaclientes == 1 && ObtenerUsuarios.estado == 1">
               <v-list-item-icon>
@@ -61,68 +87,56 @@
               </v-list-item-icon>
               <v-list-item-title>Usuarios</v-list-item-title>
             </v-list-item>
-                        
-            <v-list-item to="datos" v-if="ObtenerRoles.datos == 1 && ObtenerUsuarios.estado == 1">
-              <v-list-item-icon>
-                <v-icon>mdi-account</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>Datos</v-list-item-title>
-            </v-list-item>
 
             <v-list-item to="CrearCuenta"  v-if="ObtenerRoles.usuarios == 1 && ObtenerUsuarios.estado == 1">
-              <v-list-item-icon>
+             <v-list-item-icon>
                 <v-icon>mdi-account</v-icon>
               </v-list-item-icon>
-              <v-list-item-title>Crear cuenta</v-list-item-title>
+              <v-list-item-title>Usuarios</v-list-item-title>
             </v-list-item>
 
             <v-list-item to="Rol" v-if="ObtenerRoles.vista3 == 1 && ObtenerUsuarios.estado == 1 || ObtenerRoles.vista3 == 2 && ObtenerUsuarios.estado == 1 ">
               <v-list-item-icon>
-                <v-icon>mdi-account</v-icon>
+                <v-icon>mdi-account-cog</v-icon>
               </v-list-item-icon>
               <v-list-item-title>Asignar rol</v-list-item-title>
             </v-list-item>
 
             <v-list-item to="Clientes" v-if="ObtenerRoles.cuentas == 1 && ObtenerUsuarios.estado == 1">
               <v-list-item-icon>
-                <v-icon>mdi-bed</v-icon>
+                <v-icon>mdi-account-alert</v-icon>
               </v-list-item-icon>
               <v-list-item-title>Aprobar Clientes</v-list-item-title>
             </v-list-item>
 
             <v-list-item to="clientes2" v-if="ObtenerRoles.aprobarclientes == 1 && ObtenerUsuarios.estado == 1">
               <v-list-item-icon>
-                <v-icon>mdi-bed</v-icon>
+                <v-icon>mdi-account-details</v-icon>
               </v-list-item-icon>
               <v-list-item-title>Lista de Clientes</v-list-item-title>
             </v-list-item>
 
             <v-list-item to="detalleshabitacion" v-if="ObtenerRoles.editarhabitacion == 1 && ObtenerUsuarios.estado == 1">
               <v-list-item-icon>
-                <v-icon>mdi-bed</v-icon>
+                <v-icon>mdi-bed-empty</v-icon>
               </v-list-item-icon>
               <v-list-item-title>detalles de habitacion</v-list-item-title>
             </v-list-item>
 
-              <v-list-item to="servicios" v-if="ObtenerRoles.vista1 == 1 && ObtenerUsuarios.estado == 1">
+            <v-list-item to="datos" v-if="ObtenerRoles.datos == 1 && ObtenerUsuarios.estado == 1">
               <v-list-item-icon>
-                <v-icon>mdi-bed</v-icon>
+                <v-icon>mdi-city</v-icon>
               </v-list-item-icon>
-              <v-list-item-title>servicios</v-list-item-title>
+              <v-list-item-title>Ciudad</v-list-item-title>
             </v-list-item>
 
-               <v-list-item to="caja" v-if="ObtenerRoles.vista2 == 1 && ObtenerUsuarios.estado == 1">
-              <v-list-item-icon>
-                <v-icon>mdi-bed</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>caja</v-list-item-title>
-            </v-list-item>
             <v-list-item @click="logout()">
               <v-list-item-icon>
                 <v-icon>mdi-logout</v-icon>
               </v-list-item-icon>
               <v-list-item-title>Cerrar sesión</v-list-item-title>
             </v-list-item>
+
           </v-list-item-group>
         </v-list>
       </v-navigation-drawer>
@@ -131,7 +145,7 @@
 
       <v-app-bar color="black" dark name v-if="$route.name && !$route.name.includes('admin-')">
 
-        <v-toolbar-title style="margin-left: 30px">Hotel D'lido</v-toolbar-title>
+        <v-toolbar-title style="margin-left: 30px">Hotel D'Lido</v-toolbar-title>
 
         <v-spacer></v-spacer>
         <!-- nombre de la sesión -->
@@ -286,7 +300,7 @@
           <v-divider></v-divider>
 
           <v-card-text class="white--text" style="color: white">
-            {{ new Date().getFullYear() }} — <strong>© Hotel Lido.</strong>
+            {{ new Date().getFullYear() }} — <strong>© Hotel D'Lido.</strong>
 
           </v-card-text>
         </v-card>

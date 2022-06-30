@@ -293,20 +293,7 @@
                       mdi-eye-off
                     </v-icon>
                   </v-btn>
-                  <v-btn 
-                  class="mr-4" 
-                   @click="stateHab(item.idhabitaciones, estadoDesactivado)"
-                    color="waring"
-                    v-bind="attrs" 
-                    v-on="on" 
-                    fab
-                    dark
-                    small
-                    >
-                    <v-icon dark>
-                      mdi-eye-off
-                    </v-icon>
-                  </v-btn>
+                  
                 </td>
               </tr>
             </tbody>

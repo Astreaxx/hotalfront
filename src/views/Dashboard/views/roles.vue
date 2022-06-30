@@ -4,12 +4,13 @@
       <v-col md="6" id="text-title">
         <h3>Roles</h3>
       </v-col>
+    </v-row>
 
-      <v-row justify="start">
+      <v-col justify="start">
         <v-dialog v-model="dialogCrear" persistent max-width="600px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn color="primary" dark v-bind="attrs" v-on="on">
-              Asignar roles de usuario
+              Asignar
             </v-btn>
           </template>
           <v-card>
@@ -74,13 +75,13 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-      </v-row>
+      </v-col>
 
-      <v-row justify="start">
+      <v-col justify="end">
         <v-dialog v-model="dialogCrear2" persistent max-width="600px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn color="primary" dark v-bind="attrs" v-on="on">
-              Asignar roles de usuario
+              Crear
             </v-btn>
           </template>
           <v-card>
@@ -247,7 +248,9 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-      </v-row>
+      </v-col>
+      
+
       <v-col md="12">
         <v-simple-table height="600px">
           <template v-slot:default>
@@ -320,12 +323,13 @@
                       <template v-slot:activator="{ on, attrs }">
                         <v-btn
                           @click="stateRolsUsers2(item.idRol,)"
-                          color="primary"
+                          color="gray"
                           dark
                           v-bind="attrs"
                           v-on="on"
+                          circle
                         >
-                          Asignar roles de usuario
+                          <v-icon dark> mdi-pen </v-icon>
                         </v-btn>
                       </template>
                       <v-card>
@@ -469,7 +473,7 @@
           </template>
         </v-simple-table>
       </v-col>
-    </v-row>
+    
   </v-container>
 </template>
 

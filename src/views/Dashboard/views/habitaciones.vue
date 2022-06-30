@@ -31,14 +31,16 @@
 
                 <th class="text-left">
                   <v-select :items="estado" item-text="nombre" item-value="nombre" menu-props="auto"
-                    v-model="EstadoSeleccionado" label="Estados"></v-select>
+                    v-model="EstadoSeleccionado" label="Estados"
+                    
+                    ></v-select>
                 </th>
               </tr>
             </thead>
-            <tbody v-for="(item, i) in habitacionesVisualizar" :key="i">
+            <tbody v-for="(item, i,) in habitacionesVisualizar" :key="i">
 
-              <tr v-if="item.estado == buscar">
-
+              <tr v-if="item.estado == buscar ">
+               
                 <td>
                   <img :src="item.img" width="150" alt="">
                 </td>
@@ -146,7 +148,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr  v-for="(item, i) in reservaVisualizar" :key="i">
+              <tr  v-for="(item, i) in reservaVisualizar" :key="i" >
                 <td>
                   <div v-for="(itemUser, i) in usuariosVisualizar" :key="i">
                     <div v-if="item.idusuario == itemUser.idUsuario">
@@ -194,6 +196,7 @@
 import axios from "axios";
 export default {
   data: () => ({
+    contador:0,
       reservaVisualizar: [],
       Servicioshabitacion: [],
       usuariosVisualizar: [],
@@ -295,11 +298,16 @@ export default {
         }
       });
     },
-
+    Contador: async function () {
+      this.contador++; 
+      console.log("contador",this.contador);
+    },
     obtenerHabitaciones: async function () {
       await axios.get("http://localhost:3000/habitaciones/obtener").then((resp) => {
         if (resp.status == 200) {
           this.habitacionesVisualizar = resp.data;
+         
+          
           this.obtenerTipoHabitaciones()
           this.obtenerEquipamiento();
         }

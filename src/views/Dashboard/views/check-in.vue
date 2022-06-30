@@ -1,31 +1,108 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col cols="3">
-        <v-select
-          v-model="cajaa.idusuario"
-          :items="ObtenerCaja"
-          item-text="nombre_caja"
-          item-value="nombre_caja"
-          label="selecionar caja"
-          :rules="Rules"
-          required
-        ></v-select>
-        <v-btn class="mr-4" color="success"> Pedir </v-btn>
-      </v-col>
-        <v-col md="6" id="text-title">
+    <h2 id="text-title">Caja actual</h2>
 
-        <h3>Caja actual</h3>
-      </v-col>
-      <v-simple-table height="100px">
-       <thead>
-              <tr>
-                <th class="text-left">Caja</th>
-                <th class="text-left">monto actual</th>
-              </tr>
-        </thead>
+      <v-col md="12">
+        <v-col id="text-title"><h3>Aperturas de Caja</h3></v-col>
+        <v-simple-table height="300px" width="20px" style="text-align: center;">
+          <template v-slot:default>
+            <thead>
+            <tr>
+              <th style="text-align: center;" >Nombre caja </th>              
+              <th style="text-align: center;">Solicitar</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(item, i) in ObtenerCaja" :key="i">
+              <td>{{ item.nombre_caja }}</td>
+              <td>
+
+       <v-dialog v-model="dialogCrear2" persistent max-width="600px">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn  @click="stateRolsUsers3(item.idCaja)" color="primary" dark v-bind="attrs" v-on="on"> Solicitar caja </v-btn>
+        </template>
+        <v-card>
+          <v-card-text>
+            <v-container>
+              <v-form v-model="validacionCreacion">
+                <v-row no-gutters>
+                  <v-card class="mx-auto" max-width="700" outlined id="margen">
+                    <center>
+                      <h2 id="margen">Registro de Caja</h2>
+                    </center>
+                    <v-form ref="form" v-model="valid" lazy-validation id="margen">                      
+                       <v-col cols="12" sm="6">
+                        <label>Nombre de usuario<h3 id="a">{{cajaa2.idusuario}}</h3><hr></label>                      
+                        
+                      </v-col>
+                      <v-container>
+                        <v-row justify="center">
+                          <v-col md="5" style="margin-right: 30px">
+                            <label>Nombre caja<h3 id="a">{{cajaa2.nombre_caja}}</h3><hr></label>
+                            
+                          </v-col>
+                          <v-col md="5" style="margin-right: 30px">
+                            <label>Descripcion</label>
+                            <v-text-field
+                              v-model="cajaa2.descripcion"
+                              :rules="Rules"
+                              required
+                            ></v-text-field>
+                          </v-col>
+                          <v-col md="5" style="margin-right: 30px">
+                            <label>Fecha apertura</label>
+                            <v-text-field
+                              v-model="cajaa2.fecha_apertura"
+                              :rules="Rules"
+                              required
+                            ></v-text-field>
+                          </v-col>
+                          <v-col md="5" style="margin-right: 30px">
+                            <label>Cantidad inicial</label>
+                            <v-text-field
+                              v-model="cajaa2.cantidad_inicial"
+                              :rules="Rules"
+                              required
+                            ></v-text-field>
+                          </v-col>
+                          <v-col md="5" style="margin-right: 30px">
+                            <label>Cantidad </label>
+                            <v-text-field v-model="cajaa2.monto" :rules="Rules" required>
+                            </v-text-field>
+                          </v-col>
+                          <v-btn
+                            :disabled="!valid"
+                            class="mr-4"
+                            color="success"
+                            @click="cambiarRol(item.idCaja,cajaa2)"
+                          >
+                            Crear Caja
+                          </v-btn>
+                        </v-row>
+                      </v-container>
+                    </v-form>
+                  </v-card>
+                </v-row>
+              </v-form>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="dialogCrear2 = false">
+              Cerrar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+     </td>
+
+            </tr>
+            </tbody>
+          </template>
         </v-simple-table>
-      <v-col md="6" id="text-title">
+      </v-col>
+<v-row>
+      <v-col id="text-title">
         <h3>Check-In</h3>
       </v-col>
       <v-col md="12">
@@ -96,10 +173,7 @@
                           v-bind="attrs"
                           v-on="on"
                           v-if="item.estado == 3"
-                          @click="
-                            BorrarReservas(item.idreserva) &&
-                              CambioEstado(item.idhabitacion, EstadoSeleccionado)
-                          "
+                          @click="BorrarReservas(item.idreserva) && CambioEstado(item.idhabitacion, EstadoSeleccionado) && stateRolsUsers2(item.idreserva)"
                           fab
                           dark
                           small
@@ -121,6 +195,7 @@
                           <v-icon dark> mdi-minus-circle </v-icon>
                         </v-btn>
                       </template>
+
                       <v-card>
                         <v-card-title>
                           <span class="text-h5">Registro de acompanante</span>
@@ -129,61 +204,41 @@
                           <v-container>
                             <v-form v-model="validacionCreacion">
                               <v-row no-gutters>
-                                <v-col cols="12" sm="6">
-                                  <label>Primer nombre</label>
+                                                 <v-col cols="12" sm="6">
                                   <v-text-field
-                                    style="margin-right: 15px"
-                                    v-model="natural.primerNombre"
+                                    v-model="RegistrarAcompas.Nombre"
+                                    type="text"
+                                    label="Nombre completo"
+                                    :rules="Rules"
+                                    required
+                                  ></v-text-field>
+                                </v-col>                             
+
+                                <v-col cols="12" sm="6">
+                                  <v-text-field
+                                    v-model="RegistrarAcompas.Identificacion"
+                                    type="text"
+                                    label="Identificacion"
                                     :rules="Rules"
                                     required
                                   ></v-text-field>
                                 </v-col>
+
                                 <v-col cols="12" sm="6">
-                                  <label>Segundo apellido</label>
                                   <v-text-field
-                                    v-model="natural.segundoApellido"
-                                    :rules="Rules"
-                                    required
-                                  >
-                                  </v-text-field>
-                                </v-col>
-                                <v-col cols="12" sm="6">
-                                  <label>Genero</label>
-                                  <v-select
-                                    v-model="natural.genero"
-                                    :items="genero"
-                                    item-text="genero"
-                                    item-value="genero"
-                                    :rules="Rules"
-                                    required
-                                  ></v-select>
-                                </v-col>
-                                <v-col cols="12" sm="6">
-                                  <label>Celular</label>
-                                  <v-text-field
-                                    v-model="natural.celular"
+                                    v-model="RegistrarAcompas.Telefono"
+                                    type="text"
+                                    label="Telefono"
                                     :rules="Rules"
                                     required
                                   ></v-text-field>
                                 </v-col>
+
                                 <v-col cols="12" sm="6">
-                                  <label>Tipo identificación</label>
-                                  <v-select
-                                    style="margin-right: 15px"
-                                    v-model="natural.tipoIdentificacion"
-                                    :items="tipoIdent"
-                                    item-text="tipo"
-                                    item-value="tipo"
-                                    :rules="Rules"
-                                    required
-                                  >
-                                  </v-select>
-                                </v-col>
-                                <v-col cols="12" sm="6">
-                                  <label>Identificacion</label>
                                   <v-text-field
-                                    style="margin-right: 15px"
-                                    v-model="natural.identificacion"
+                                    v-model="RegistrarAcompas.Edad"
+                                    type="number"
+                                    label="Edad"
                                     :rules="Rules"
                                     required
                                   ></v-text-field>
@@ -194,7 +249,7 @@
                                     :disabled="valid"
                                     class="mr-4"
                                     color="success"
-                                    @click="EntidadNatural()"
+                                    @click="registrarAcompas(RegistrarAcompas)"
                                   >
                                     Enviar
                                   </v-btn>
@@ -205,7 +260,7 @@
                         </v-card-text>
                         <v-card-actions>
                           <v-spacer></v-spacer>
-                          <v-btn color="blue darken-1" text @click="dialogCrear = false">
+                          <v-btn color="blue darken-1" text @click="dialogCrear = false && cerrar()">
                             Cerrar
                           </v-btn>
                         </v-card-actions>
@@ -225,8 +280,8 @@
     </v-row>
   </v-container>
 </template>
-
 <script>
+
 import axios from "axios";
 export default {
   data: () => ({
@@ -235,7 +290,17 @@ export default {
     categoriaHabitacion: [],
     Servicioshabitacion: [],
     usuariosVisualizar: [],
+    ObtenerUsuarios: [],
+    ObtenerCaja: [],
+    ObtenerUsuarios: [],
+    habitacionesVisualizar: [],
+    categoriaHabitacion: [],
+    equipamientoVisualizar: [],
+    ciudad: [],
+    tipoentidad: [],
+    actividadjurid: [],
     dialogCrear: false,
+    dialogCrear2: false,
 
     validacionCreacion: true,
     menu: false,
@@ -251,8 +316,7 @@ export default {
       idcategoriaHab: 0,
       idusuario: 0,
     },
-    ObtenerUsuarios: [],
-    ObtenerCaja: [],
+    
     cajaa: {
       idusuario: "",
       nombre_caja: "",
@@ -264,12 +328,28 @@ export default {
       ubicacion: "",
       estado: 1,
     },
-    ciudad: [],
-    tipoentidad: [],
-    actividadjurid: [],
-    valid: false,
-    firstname: "",
-    lastname: "",
+      cajaa2:{
+      idusuario:"",
+      nombre_caja:"",
+      descripcion:"",
+      fecha_apertura:"",
+      cantidad_inicial:0,
+      cantidad_cierre:0,
+      monto:0,
+      ubicacion:"",
+      estado:1,
+      idrol:0,
+      trabajador:0
+    },
+    RegistrarAcompas: {
+      Nombre: "",
+      Edad: 0,
+      Identificacion: "",
+      Telefono: "",
+      idreserva: 0,
+    },
+    
+   
     Rules: [(v) => !!v || "Campo requerido"],
     email: "",
     emailRules: [
@@ -300,36 +380,35 @@ export default {
       idTipoPersona: 1,
     },
 
+    
+    paisId: 0,
+    paises: [],
+    genero: [{ genero: "M" }, { genero: "F" }],
+    tipoIdent: [{ tipo: "Cedula" }, { tipo: "Pasaporte" }],
+    password: "",
+    confirmPassword: "",
+    respuesta: {},
+    respuesta2: "",
+    token: "",
+    usuario: "",
+    firstname: "",
+    lastname: "",
+    obtener: 0,
+    idTipoPersona: 0,
+    valid: false,   
+    drawer: false,
+    group: null,
     menu: false,
     modal: false,
     menu2: false,
     show1: false,
     show2: false,
-    paisId: 0,
-    paises: [],
-    genero: [{ genero: "M" }, { genero: "F" }],
-    tipoIdent: [{ tipo: "Cedula" }, { tipo: "Pasaporte" }],
-
-    password: "",
-    confirmPassword: "",
-
-    respuesta: {},
-    respuesta2: "",
-    ObtenerUsuarios: [],
-    token: "",
-    usuario: "",
-    obtener: 0,
-    idTipoPersona: 0,
-    drawer: false,
-    group: null,
     trabajador: 0,
-
-    habitacionesVisualizar: [],
-    categoriaHabitacion: [],
-    equipamientoVisualizar: [],
     EstadoSeleccionado: "",
     buscar: "",
     estado: "Ocupada",
+    idrol: 0,
+    trabajador:0
   }),
 
   created() {
@@ -344,41 +423,123 @@ export default {
   },
 
   methods: {
-    caja: async function () {
-      let send = {
-        idusuario: this.cajaa.idusuario,
-        nombre_caja: this.cajaa.nombre_caja,
-        descripcion: this.cajaa.descripcion,
-        fecha_apertura: this.cajaa.fecha_apertura,
-        cantidad_inicial: this.cajaa.cantidad_inicial,
-        cantidad_cierre: this.cajaa.cantidad_cierre,
-        monto: this.cajaa.monto,
-        ubicacion: this.cajaa.ubicacion,
-        estado: 1,
-      };
-      await axios.post("http://localhost:3000/caja/create", send).then((resp) => {
+
+     stateRolsUsers3: async function (id) {
+      this.idrol = parseInt(id);
+      console.log("Id rol: ", this.idrol);
+      this.obtenerRoles();     
+    },
+
+     obtenerRoles: async function () {
+      console.log("Hola");
+      await axios.get("http://localhost:3000/caja").then((resp) => {
+        if (resp.status == 200) {
+          for (let index = 0; index < resp.data.length; index++) {
+            const element = resp.data[index];
+            if (element.idCaja == this.idrol) {
+              this.cajaa2 = element;             
+            }
+          }
+          console.log("Yo soy el rol: ", this.cajaa2);
+          this.obtenerUsuario();
+        }
+      });
+    },
+    cambiarRol: async function (id) {
+      let Aidi = parseInt(id);
+      let estado = this.cajaa2;
+      console.log("Id Reserva: ", Aidi, "Estado: ", estado);
+      await axios
+        .put("http://localhost:3000/caja/update/" + this.idrol, estado)
+        .then((resp) => {
+          if (resp.status == 204) {
+            location.reload();
+          }
+        });
+    },
+    obtenerUsuario: async function () {
+        this.trabajador = parseInt(window.sessionStorage.getItem("seleccionadoAdmin"))
+        await axios.get("http://localhost:3000/usuario"+this.trabajador).then((resp) => {
+          if (resp.status == 200) {
+            this.ObtenerUsuario = resp.data;
+          }
+        });
+
+      },
+    cerrar: async function () {
+         location.reload("/panel/check-in");
+        },
+     stateRolsUsers2: async function (id) {
+      this.idrol = parseInt(id);
+      this.RegistrarAcompas.idreserva= this.idrol;
+      console.log("Id rol: ", this.idrol);   
+    },
+    registrarAcompas: async function () {
+      // let Aidi = parseInt(id);
+      console.log("Hola");
+      console.log("acompa",this.RegistrarAcompas);
+      let acompa = this.RegistrarAcompas;
+      
+      await axios.post("http://localhost:3000/acompanante/create", acompa)
+        .then((resp) => {
+           console.log("acompa",this.RegistrarAcompas)
+          console.log("acompa",resp)
+          if (resp.status == 201) {
+            this.RegistrarAcompas = resp.data;
+            console.log("entidad id", this.RegistrarAcompas);
+            alert("acompañante agregado exitosamente");
+            
+          }
+         
+        })
+        .catch((error) => {
+          let respu = error.message;
+          alert(respu);
+          console.log(this.respuesta);
+        });
+    },
+
+
+      caja: async function(){
+      let send ={
+        idusuario:this.cajaa.idusuario,
+        nombre_caja:this.cajaa.nombre_caja,
+        descripcion:this.cajaa.descripcion,
+        fecha_apertura:this.cajaa.fecha_apertura,
+        cantidad_inicial:this.cajaa.cantidad_inicial,
+        cantidad_cierre:this.cajaa.cantidad_cierre,
+        monto:this.cajaa.monto,
+        ubicacion:this.cajaa.ubicacion,
+        estado:1
+      }
+      await  axios.post("http://localhost:3000/caja/create",send).then((resp) => {
         if (resp.status == 201) {
           alert("Caja creada Correctamente");
           location.reload();
         }
-      });
+      })
     },
-    obtenerCaja: async function () {
-      await axios.get("http://localhost:3000/caja").then((resp) => {
-        if (resp.status == 200) {
-          this.ObtenerCaja = resp.data;
-          console.log(this.obtenerCaja);
-        }
-      });
-    },
+  obtenerCaja: async  function(){
+        await  axios.get('http://localhost:3000/caja')
+        .then((resp)=>{
+          console.log("CAJA",resp);
+          if (resp.status == 200){
+            this.ObtenerCaja= resp.data
+          }
+        })
+        },
 
-    obtenerUsuarios: async function () {
-      await axios.get("http://localhost:3000/usuario").then((resp) => {
-        if (resp.status == 200) {
-          this.ObtenerUsuarios = resp.data;
-        }
-      });
-    },
+     obtenerUsuarios: async function () {
+
+        await axios.get("http://localhost:3000/usuario").then((resp) => {
+          if (resp.status == 200) {
+            this.ObtenerUsuarios = resp.data;
+          }
+        });
+
+      },
+    
+
     // otra vez vamos a ver xd
 
     EntidadNatural: async function () {
@@ -600,6 +761,10 @@ export default {
 </script>
 
 <style scoped>
+#a{
+  padding-top: 14%;
+}
+
 #text-title {
   margin-top: 20px;
   margin-left: 40%;

@@ -267,7 +267,7 @@ export default {
                 nombre: this.juridico.razonSocial,
                 email: this.juridico.correo,
                 password: this.password,
-                estado: true,
+                estado: false,
                 idEntidad: this.respuesta.idEntidad,
             }
             await axios

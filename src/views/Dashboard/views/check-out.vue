@@ -13,7 +13,7 @@
                 <th class="text-left">Tipo habitación</th>
                 <th class="text-left">Habitación</th>
                 <th class="text-left">Servicio</th>
-                <th class="text-left">Catidad Personas</th>
+                <th class="text-left">Cantidad Personas</th>
                 <th class="text-left">Estado</th>
                 <th class="text-left">Fecha de creación</th>
                 <th class="text-left">Fecha inicio</th>
@@ -68,8 +68,7 @@
                     <v-dialog v-model="dialogCrear" persistent max-width="600px">
                       <template v-slot:activator="{ on, attrs }">
 
-                        <v-btn class="mx-2" v-bind="attrs" v-on="on" v-if="item.estado == 3"
-                          @click="checkinReservas(item.idreserva,) && CambioEstado(item.idhabitacion, EstadoSeleccionado)"
+                        <v-btn class="mx-2" v-bind="attrs" v-on="on"    
                           fab dark small color="red">
                           <v-icon dark>
                             mdi-checkbox-marked-outline
@@ -78,7 +77,7 @@
                         <!-- a -->
 
 
-                        <v-btn class="mx-2" v-if="item.estado == 1" @click="RecuperarReservas(item.idreserva)" fab
+                        <v-btn class="mx-2" v-if="item.estado == 1"  fab
                           dark small color="yellow">
                           <v-icon dark>
                             mdi-minus-circle
@@ -92,41 +91,41 @@
                         </v-card-title>
                         <v-card-text>
                           <v-container>
-                            <v-form v-model="validacionCreacion">
+                            <v-form >
                               <v-row no-gutters>
                                 <v-col cols="12" sm="6">
                                   <label>Primer nombre</label>
-                                  <v-text-field style="margin-right: 15px;" v-model="natural.primerNombre"
+                                  <v-text-field style="margin-right: 15px;"
                                     :rules="Rules" required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" sm="6">
                                   <label>Segundo apellido</label>
-                                  <v-text-field v-model="natural.segundoApellido" :rules="Rules" required>
+                                  <v-text-field  required>
                                   </v-text-field>
                                 </v-col>
                                 <v-col cols="12" sm="6">
                                   <label>Genero</label>
-                                  <v-select v-model="natural.genero" :items="genero" item-text="genero"
-                                    item-value="genero" :rules="Rules" required></v-select>
+                                  <v-select 
+                                     required></v-select>
                                 </v-col>
                                 <v-col cols="12" sm="6">
                                   <label>Celular</label>
-                                  <v-text-field v-model="natural.celular" :rules="Rules" required></v-text-field>
+                                  <v-text-field  required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" sm="6">
                                   <label>Tipo identificación</label>
-                                  <v-select style="margin-right: 15px;" v-model="natural.tipoIdentificacion"
-                                    :items="tipoIdent" item-text="tipo" item-value="tipo" :rules="Rules" required>
+                                  <v-select style="margin-right: 15px;" 
+                                      required>
                                   </v-select>
                                 </v-col>
                                 <v-col cols="12" sm="6">
                                   <label>Identificacion</label>
-                                  <v-text-field style="margin-right: 15px;" v-model="natural.identificacion"
-                                    :rules="Rules" required></v-text-field>
+                                  <v-text-field style="margin-right: 15px;" 
+                                   required></v-text-field>
                                 </v-col>
 
                                 <v-col md="3" style="margin-right: 390px">
-                                  <v-btn :disabled="valid" class="mr-4" color="success" @click="EntidadNatural()">
+                                  <v-btn>
                                     Enviar
                                   </v-btn>
                                 </v-col>

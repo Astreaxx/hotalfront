@@ -5,7 +5,6 @@ import HomeView from '../views/HomeView.vue'
 Vue.use(VueRouter)
 
 
-
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
@@ -73,86 +72,92 @@ const router = new VueRouter({
               }, 
               {
                 path: 'dashboard',
-                name: 'admin-index',
+                name: 'admin-dashboard',
                 component: () =>
                     import (/* webpackChunkName: "Dashboard"*/'../views/Dashboard/views/dashboard.vue'),
-              }, 
+              },
+              {
+                path: 'inicio',
+                name: 'admin-inicio',
+                component: () =>
+                    import (/* webpackChunkName: "Dashboard"*/'../views/Dashboard/views/dashboard.vue'),
+              },  
               {
                 path: 'reserva',
-                name: 'admin-index',
+                name: 'admin-reserva',
                 component: () =>
                     import (/* webpackChunkName: "Dashboard"*/'../views/Dashboard/views/reservas.vue'),
               }, 
               {
                 path: 'check-in',
-                name: 'admin-index',
+                name: 'admin-checkin',
                 component: () =>
                     import (/* webpackChunkName: "Dashboard"*/'../views/Dashboard/views/check-in.vue'),
               },
               {
                 path: 'check-out',
-                name: 'admin-index',
+                name: 'admin-checkout',
                 component: () =>
                     import (/* webpackChunkName: "Dashboard"*/'../views/Dashboard/views/check-out.vue'),
               },
               {
                 path: 'habitaciones',
-                name: 'admin-index',
+                name: 'admin-hab',
                 component: () =>
                     import (/* webpackChunkName: "Dashboard"*/'../views/Dashboard/views/habitaciones.vue'),
               }, 
               {
                 path: 'Clientes',
-                name: 'admin-index',
+                name: 'admin-clientes',
                 component: () =>
                     import (/* webpackChunkName: "Dashboard"*/'../views/Dashboard/views/cliente.vue'),
               }, 
 
               {
                 path: 'clientes2',
-                name: 'admin-index',
+                name: 'admin-detclientes',
                 component: () =>
                     import (/* webpackChunkName: "Dashboard"*/'../views/Dashboard/views/clientes2.vue'),
               },
               {
                 path: 'Usuarios',
-                name: 'admin-index',
+                name: 'admin-usuarios',
                 component: () =>
                     import (/* webpackChunkName: "Dashboard"*/'../views/Dashboard/views/usuarios.vue'),
               },
               {
                 path: 'datos',
-                name: 'admin-index',
+                name: 'admin-datos',
                 component: () =>
                     import (/* webpackChunkName: "Dashboard"*/'../views/Dashboard/views/datos.vue'),
               },
               {
                 path: 'CrearCuenta',
-                name: 'admin-index',
+                name: 'admin-crear',
                 component: () =>
                     import (/* webpackChunkName: "Dashboard"*/'../views/Dashboard/views/crear_cuentas.vue'),
               },
               {
                 path: 'Rol',
-                name: 'admin-index',
+                name: 'admin-rol',
                 component: () =>
                     import (/* webpackChunkName: "Dashboard"*/'../views/Dashboard/views/roles.vue'),
               },
               {
                 path: 'detalleshabitacion',
-                name: 'admin-index',
+                name: 'admin-dethab',
                 component: () =>
                     import (/* webpackChunkName: "Dashboard"*/'../views/Dashboard/views/detalleshabitacion.vue'),
               },
               {
                 path: 'servicios',
-                name: 'admin-index',
+                name: 'admin-servicios',
                 component: () =>
                     import (/* webpackChunkName: "Dashboard"*/'../views/Dashboard/views/servicios.vue'),
               },
               {
                 path: 'caja',
-                name: 'admin-index',
+                name: 'admin-caja',
                 component: () =>
                     import (/* webpackChunkName: "Dashboard"*/'../views/Dashboard/views/caja.vue'),
               },

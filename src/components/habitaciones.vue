@@ -194,7 +194,7 @@ export default {
             console.log(this.habitacion);
           });
       } else {
-        await axios.get("http://localhost:3000/habitaciones").then((resp) => {
+        await axios.get("http://localhost:3000/habitaciones/obtener").then((resp) => {
           if (resp.status == 200) {
             this.habitacion = resp.data;
             console.log("todo birn");

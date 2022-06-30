@@ -1,8 +1,8 @@
 <template>
   <v-container>
     <v-row>
-      <v-col md="6" id="text-title">
-        <h3>Creacion de reservas </h3>
+      <v-col id="text-title">
+        <h3>Creación de reservas </h3><hr>
       </v-col>
       <v-col md="12">
         <v-simple-table height="300px">
@@ -13,7 +13,7 @@
                 <th class="text-left">Tipo habitación</th>
                 <th class="text-left">Habitación</th>
                 <th class="text-left">Servicio</th>
-                <th class="text-left">Catidad Personas</th>
+                <th class="text-left">Cantidad Personas</th>
                 <th class="text-left">Estado</th>
                 <th class="text-left">Fecha de creación</th>
                 <th class="text-left">Fecha inicio</th>
@@ -87,245 +87,6 @@
           </template>
         </v-simple-table>
       </v-col>
-
-
-      <!-- dialog de Creacion  de reservas -->
-      <v-row justify="start">
-
-              <v-container>
-                <v-form v-model="validacionCreacion">
-                  <v-row no-gutters>
-                    <v-col cols="12" sm="6">
-                      <v-select
-                        v-model="reservar.idusuario"
-                        :items="usuariosVisualizar"
-                        item-text="nombre"
-                        item-value="idUsuario"
-                        label="Usuario"
-                        :rules="Rules"
-                        required
-                      ></v-select>
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <v-select
-                        v-model="reservar.idcategoriaHab"
-                        :items="categoriaHabitacion"
-                        item-text="titulo"
-                        item-value="idcategoriaHab"
-                        label="Categoria de habitación"
-                        :rules="Rules"
-                        required
-                      ></v-select>
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <v-select
-                        v-model="reservar.idhabitacion"
-                        :items="habitacionesVisualizar"
-                        item-text="nombre"
-                        item-value="idhabitacion"
-                        label="Habitación"
-                        :rules="Rules"
-                        required
-                      ></v-select>
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <v-select
-                        v-model="reservar.idservicio"
-                        :items="Servicioshabitacion"
-                        item-text="servicio"
-                        item-value="idservicio"
-                        label="Servicio"
-                        :rules="Rules"
-                        required
-                      ></v-select>
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <v-menu
-                        ref="menu"
-                        v-model="menu"
-                        :close-on-content-click="false"
-                        :return-value.sync="date"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="auto"
-                      >
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-text-field
-                            v-model="reservar.fechaEntrada"
-                            :rules="Rules"
-                            label="Fecha de entrada"
-                            required
-                            prepend-icon="mdi-calendar"
-                            readonly
-                            v-bind="attrs"
-                            v-on="on"
-                          ></v-text-field>
-                        </template>
-                        <v-date-picker
-                          v-model="reservar.fechaEntrada"
-                          no-title
-                          scrollable
-                        >
-                          <v-spacer></v-spacer>
-                          <v-btn text color="primary" @click="menu = false">
-                            Cancel
-                          </v-btn>
-                          <v-btn
-                            text
-                            color="primary"
-                            @click="$refs.menu.save(date)"
-                          >
-                            OK
-                          </v-btn>
-                        </v-date-picker>
-                      </v-menu>
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <v-menu
-                        ref="menu"
-                        v-model="menu2"
-                        :close-on-content-click="false"
-                        :return-value.sync="date"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="auto"
-                      >
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-text-field
-                            v-model="reservar.fechaSalida"
-                            :rules="Rules"
-                            label="Fecha de salida"
-                            required
-                            prepend-icon="mdi-calendar"
-                            readonly
-                            v-bind="attrs"
-                            v-on="on"
-                          ></v-text-field>
-                        </template>
-                        <v-date-picker
-                          v-model="reservar.fechaSalida"
-                          no-title
-                          scrollable
-                        >
-                          <v-spacer></v-spacer>
-                          <v-btn text color="primary" @click="menu = false">
-                            Cancel
-                          </v-btn>
-                          <v-btn
-                            text
-                            color="primary"
-                            @click="$refs.menu.save(date)"
-                          >
-                            OK
-                          </v-btn>
-                        </v-date-picker>
-                      </v-menu>
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <v-text-field
-                        v-model="reservar.cantPersonas"
-                        type="number"
-                        label="Cantidad de personas"
-                        :rules="Rules"
-                        required
-                      ></v-text-field>
-                    </v-col>
-
-                    <v-col md="3" style="margin-right: 390px">
-                      <v-btn
-                        @click="enviarReservas()"
-                        :disabled="!validacionCreacion"
-                        class="mr-4"
-                        color="success"
-                      >
-                        Enviar
-                      </v-btn>
-                    </v-col>
-                  </v-row>
-                </v-form>
-              </v-container>
-
-
-            <v-card-title>
-              <span class="text-h5">Creación de acompañantes</span>
-            </v-card-title>
-            <v-card-text>
-              <v-container>
-                <v-form v-model="validacionCreacion">
-                  <v-row no-gutters>
-                    <v-col cols="12" sm="6">
-                      <v-text-field
-                        v-model="RegistrarAcompas.Nombre"
-                        type="text"
-                        label="Nombre completo"
-                        :rules="Rules"
-                        required
-                      ></v-text-field>
-                    </v-col>
-
-                          <v-col cols="12" sm="6">
-                      <v-select
-                        v-model="reservar.idreserva"
-                        :items="reservaVisualizar"
-                        item-text="idreserva"
-                        item-value="idreserva"
-                        label="Habitación"
-                        :rules="Rules"
-                        required
-                      ></v-select>
-                    </v-col>
-
-                    <v-col cols="12" sm="6">
-                      <v-text-field
-                        v-model="RegistrarAcompas.identificacion"
-                        type="text"
-                        label="Identificacion"
-                        :rules="Rules"
-                        required
-                      ></v-text-field>
-                    </v-col>
-
-                    <v-col cols="12" sm="6">
-                      <v-text-field
-                        v-model="RegistrarAcompas.telefono"
-                        type="text"
-                        label="Telefono"
-                        :rules="Rules"
-                        required
-                      ></v-text-field>
-                    </v-col>
-
-                    <v-col cols="12" sm="6">
-                      <v-text-field
-                        v-model="RegistrarAcompas.Edad"
-                        type="number"
-                        label="Edad"
-                        :rules="Rules"
-                        required
-                      ></v-text-field>
-                    </v-col>
-
-                    <v-col md="3" style="margin-right: 390px">
-                      <v-btn
-                        @click="RegistrarAcompas(reservar.idusuario)"
-                        :disabled="!validacionCreacion"
-                        class="mr-4"
-                        color="success"
-                      >
-                        Enviar
-                      </v-btn>
-                    </v-col>
-                  </v-row>
-                </v-form>
-              </v-container>
-            </v-card-text>
-           
-      </v-row>
-
-
-
-
-      <!-- Fin del dialog -->
     </v-row>
   </v-container>
 </template>
@@ -717,8 +478,13 @@ export default {
 
 
 <style scoped>
-#text-title {
+#text-title{
+  text-align: center;
   margin-top: 20px;
-  margin-left: 40%;
+  font-size: 20px;
+}
+
+hr{
+  border-top: 2px dashed green; 
 }
 </style>
